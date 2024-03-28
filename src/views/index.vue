@@ -2,7 +2,7 @@
     <div class="chatContent" ref="chatBox">
       <ul>
         <li v-for="(item, index) in info" :key="index" :class="[item.is_robot ? 'left' : 'right']">
-          <span>{{ item.content }} <small>{{ formatDate(item.timestamp) }}</small></span>
+          <span>{{ item.content }} <small>{{ $formatDate(item.timestamp) }}</small></span>
         </li>
       </ul>
     </div>
@@ -18,7 +18,7 @@
 <script setup>
 import useChatGPT from '@/composables/useChatGPT'
 
-const { msg, sendmsg, info, formatDate } = useChatGPT()
+const { msg, sendmsg, info } = useChatGPT()
 </script>
 
 <style scoped>

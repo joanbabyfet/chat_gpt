@@ -12,3 +12,9 @@ export function sliceWord(content, limit = 20) {
     }
     return str
 }
+
+//时间戳转日期格式, 例 YYYY-MM-DD HH:mm:ss
+export function formatDate(timestamp) {
+    const date = new Date(timestamp)
+    return date.toLocaleDateString().replace(/\//g, '-') + ' ' + date.toTimeString().substring(0, 8)
+}

@@ -1,12 +1,14 @@
 import { ref, onMounted } from 'vue'
 import { chat_gpt } from '../api/index'
 import { ElMessage } from 'element-plus'
+import useChatStore from '../store/chat'
 
 export default function useChatGPT() {
     //定义初始化数据
     const model = 'gpt-3.5-turbo'
     const msg = ref('') //问
     const info = ref([]) //答
+    const chatStore = useChatStore()
 
     const sendmsg = async () => {
         if (msg.value.length === 0) {
@@ -19,7 +21,8 @@ export default function useChatGPT() {
             is_robot: false
         }
         info.value.push(entry)
-        localStorage.setItem('chatHistory', JSON.stringify(info.value))
+        //localStorage.setItem('chatHistory', JSON.stringify(info.value))
+        chatStore.setChatHistory(JSON.stringify(info.value))
 
         const data = {
             model: model,
@@ -42,7 +45,8 @@ export default function useChatGPT() {
                     is_robot: result.choices[0].message.role == 'assistant' ? true : false
                 }
                 info.value.push(entry)
-                localStorage.setItem('chatHistory', JSON.stringify(info.value))
+                //localStorage.setItem('chatHistory', JSON.stringify(info.value))
+                chatStore.setChatHistory(JSON.stringify(info.value))
             }
         })
         .catch(function (error) { // 请求失败处理
@@ -52,21 +56,16 @@ export default function useChatGPT() {
     }
 
     onMounted(() => {
-        const chatHistory = localStorage.getItem('chatHistory');
+        //const chatHistory = localStorage.getItem('chatHistory')
+        const chatHistory = chatStore.chatHistory
         if (chatHistory) {
             info.value = JSON.parse(chatHistory);
         }
     })
-
-    function formatDate(timestamp) {
-        const date = new Date(timestamp)
-        return date.toLocaleDateString().replace(/\//g, '-') + ' ' + date.toTimeString().substring(0, 8)
-    }
     
     return {
         msg,
         sendmsg,
-        info,
-        formatDate
+        info
     }
 }

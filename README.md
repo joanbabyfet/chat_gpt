@@ -4,7 +4,7 @@
 ## Feature
 
 * 实现基础对话
-* 实现对话历史记录
+* 实现对话历史记录, 并通过 pinia 做数据持久化
 * 使用 axios http请求库 与 element-plus 组件库
 * 支持多环境开发配置 .env/.env.test/.env.prod
 
